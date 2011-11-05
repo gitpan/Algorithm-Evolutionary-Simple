@@ -2,10 +2,9 @@ package Algorithm::Evolutionary::Simple;
 
 use warnings;
 use strict;
-use Carp;
-
-use version; our $VERSION = qv('v0.0.3');
 use Carp qw(croak);
+
+our $VERSION = '0.0.3'; #Another attempt
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
