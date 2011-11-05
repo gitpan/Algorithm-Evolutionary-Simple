@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('v0.0.3');
 use Carp qw(croak);
 
 use base 'Exporter';
