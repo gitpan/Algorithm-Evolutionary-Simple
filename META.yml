@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Algorithm-Evolutionary-Simple
-version:            0.0.3
+version:            0.0.4
 abstract:           A few auxiliary functions to run a simple EA in Perl
 author:
     - JJ Merelo <jj@merelo.net>
@@ -15,7 +15,6 @@ requires:
     Exporter:        0
     Sort::Key::Top:  0
     Test::More:      0
-    version:         0.77
 no_index:
     directory:
         - t

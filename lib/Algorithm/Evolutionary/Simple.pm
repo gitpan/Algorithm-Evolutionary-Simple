@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.0.3'; #Another attempt
+our $VERSION = '0.0.4'; #Another attempt
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
@@ -116,7 +116,8 @@ This document describes Algorithm::Evolutionary::Simple version 0.0.3
 
 =head1 DESCRIPTION
 
-Assorted functions needed by an evolutionary algorithm app; just to get started
+Assorted functions needed by an evolutionary algorithm app; just to
+    get started. 
 
 
 =head1 INTERFACE 
@@ -153,32 +154,9 @@ Applies two-point crossover to both strings, returning them changed
 
 =head1 DIAGNOSTICS
 
-None known
-
-=over
-
-=item C<< Error message here, perhaps with %s placeholders >>
-
-[Description of error here]
-
-=item C<< Another error message here >>
-
-[Description of error here]
-
-[Et cetera, et cetera]
-
-=back
+Will complain if some argument is missing.
 
 
-=head1 CONFIGURATION AND ENVIRONMENT
-
-=for author to fill in:
-    A full explanation of any configuration system(s) used by the
-    module, including the names and locations of any configuration
-    files, and the meaning of any environment variables or properties
-    that can be set. These descriptions must also include details of any
-    configuration language used.
-  
 Algorithm::Evolutionary::Simple requires no configuration files or environment variables.
 
 
@@ -186,6 +164,10 @@ Algorithm::Evolutionary::Simple requires no configuration files or environment v
 
 L<Sort::Key::Top> for efficient sorting. 
 
+=head1 SEE ALSO
+
+There are excellent evolutionary algorithm libraries out there; see
+    for instance L<AI::Genetic::Pro>
 
 =head1 BUGS AND LIMITATIONS
 
@@ -207,7 +189,7 @@ JJ Merelo  C<< <jj@merelo.net> >>
 Copyright (c) 2011, JJ Merelo C<< <jj@merelo.net> >>. All rights reserved.
 
 This module is free software; you can redistribute it and/or
-modify it under the same terms as Perl itself. See L<perlartistic>.
+modify it under the GPL v3 licence.
 
 
 =head1 DISCLAIMER OF WARRANTY

@@ -11,7 +11,6 @@ WriteMakefile(
     EXE_FILES => [ 'script/simple-EA.pl' ],
     PREREQ_PM => {
         'Test::More' => 0,
-        'version'    => 0.77,
 	'Carp' => 0,
 	'Exporter' => 0,
 	'Sort::Key::Top' => 0

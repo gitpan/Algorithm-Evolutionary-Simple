@@ -1,3 +1,7 @@
+2011-11-06  Juan J. Merelo  <jmerelo@sheldon>
+
+	* MANIFEST: Taking out unneeded files, and putting in those needed 
+
 Revision history for Algorithm-Evolutionary-Simple
 
 0.0.1  Thu Nov  3 19:22:26 2011
