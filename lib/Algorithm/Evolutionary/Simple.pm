@@ -4,13 +4,14 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.0.4'; #Another attempt
+our $VERSION = '0.1.1'; # SofEA edition
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
 
 our @EXPORT_OK= qw( random_chromosome max_ones spin get_pool_roulette_wheel 
-		    produce_offspring mutate crossover );
+		    get_pool_binary_tournament
+		    produce_offspring mutate crossover single_generation );
 
 
 # Module implementation here
@@ -39,7 +40,6 @@ sub get_pool_roulette_wheel {
 
   my $total_fitness = 0;
   map(  $total_fitness += $fitness_of->{$_} , @$population );
-  my @best = rnkeytop { $fitness_of->{$_} } 2 => @$population;
   my @wheel = map( $fitness_of->{$_}/$total_fitness, @$population);
   my @slots = spin( \@wheel, scalar(@$population) );
   my @pool;
@@ -49,6 +49,27 @@ sub get_pool_roulette_wheel {
     my $copies = $slots[$p];
     for (1..$copies) {
       push @pool, $population->[$p];
+    }
+  } while ( @pool < $need );
+  
+  @pool;
+}
+
+sub get_pool_binary_tournament {
+  my $population = shift || croak "No population here";
+  my $fitness_of = shift || croak "need stuff evaluated";
+  my $need = shift || croak "I need to know the new population size";
+
+  my $total_fitness = 0;
+  my @pool;
+  my $population_size = @$population;
+  do {
+    my $one = $population->[rand( $population_size )];
+    my $another = $population->[rand( $population_size )];
+    if ( $fitness_of->{$one} > $fitness_of->{$another} ) {
+      push @pool, $one;
+    } else {
+      push @pool, $another;
     }
   } while ( @pool < $need );
   
@@ -78,7 +99,7 @@ sub produce_offspring {
 
 sub mutate {
   my $chromosome = shift;
-  my $mutation_point = rand( length( $chromosome ));
+  my $mutation_point = int(rand( length( $chromosome )));
   substr($chromosome, $mutation_point, 1,
 	 ( substr($chromosome, $mutation_point, 1) eq 1 )?0:1 );
   return $chromosome;
@@ -97,6 +118,17 @@ sub crossover {
   return ( $chromosome_1, $chromosome_2 );
 }
 
+sub single_generation {
+  my $population = shift || croak "No population";
+  my $fitness_of = shift || croak "No fitness";
+  my $population_size = @{$population};
+  my @best = rnkeytop { $fitness_of->{$_} } 2 => @$population; # Extract elite
+  my @reproductive_pool = get_pool_roulette_wheel( $population, $fitness_of, $population_size ); # Reproduce
+  my @offspring = produce_offspring( \@reproductive_pool, $population_size - 2 ); #Obtain offspring
+  unshift( @offspring, @best ); #Insert elite at the beginning
+  @offspring; # return
+}
+
 "010101"; # Magic true value required at end of module
 __END__
 
@@ -112,7 +144,31 @@ This document describes Algorithm::Evolutionary::Simple version 0.0.3
 
 =head1 SYNOPSIS
 
-    use Algorithm::Evolutionary::Simple qw(max_ones random_chromosome);
+    use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones 
+					get_pool_roulette_wheel produce_offspring single_generation);
+
+   my @population;
+   my %fitness_of;
+   for (my $i = 0; $i < $number_of_strings; $i++) {
+      $population[$i] = random_chromosome( $length);
+      $fitness_of{$population[$i]} = max_ones( $population[$i] );
+    }
+  
+    my @best;
+    my $generations=0;
+    do {
+        my @pool = get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings );
+        my @new_pop = produce_offspring( \@pool, $number_of_strings/2 );
+        for my $p ( @new_pop ) {
+	    if ( !$fitness_of{$p} ) {
+	        $fitness_of{$p} = max_ones( $p );
+	    }
+        }
+       @best = rnkeytop { $fitness_of{$_} } $number_of_strings/2 => @population;
+       @population = (@best, @new_pop);
+       print "Best so far $best[0] with fitness $fitness_of{$best[0]}\n";	 
+   } while ( ( $generations++ < $number_of_generations ) and ($fitness_of{$best[0]} != $length ));
+
 
 =head1 DESCRIPTION
 
@@ -135,7 +191,12 @@ Classical function that returns the number of ones in a binary string.
 
 Mainly for internal use, $wheel has the normalized probability, and
     $slots  the number of individuals to return.
- 
+
+=head2 single_generation( $population_arrayref, $fitness_of_hashref )
+
+Applies all steps to arrive to a new generation, except
+evaluation. Keeps the two best for the next generation.
+
 =head2 get_pool_roulette_wheel( $population_arrayref, $fitness_of_hashref, $how_many_I_need )
 
 Obtains a pool of new chromosomes using fitness_proportional selection

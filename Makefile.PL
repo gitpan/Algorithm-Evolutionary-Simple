@@ -8,7 +8,7 @@ WriteMakefile(
     VERSION_FROM        => 'lib/Algorithm/Evolutionary/Simple.pm',
     ABSTRACT_FROM       => 'lib/Algorithm/Evolutionary/Simple.pm',
     LICENSE => 'gpl',
-    EXE_FILES => [ 'script/simple-EA.pl' ],
+    EXE_FILES => [ 'script/simple-EA.pl',  'script/maxones.pl'],
     PREREQ_PM => {
         'Test::More' => 0,
 	'Carp' => 0,

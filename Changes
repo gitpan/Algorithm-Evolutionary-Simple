@@ -1,3 +1,16 @@
+2012-03-27  Juan J. Merelo Guervós  <jjmerelo@gmail.com>
+
+	* lib/Algorithm/Evolutionary/Simple.pm
+	(get_pool_binary_tournament): Added binary tournament, a less
+	greedy way of selection which seems to work a bit better and is a
+	bit faster.
+
+2011-12-06  Juan J. Merelo Guervós  <jjmerelo@gmail.com>
+
+	* lib/Algorithm/Evolutionary/Simple.pm (single_generation):
+	Changing documentation and adding a rather useless
+	single_generation 
+
 2011-11-06  Juan J. Merelo  <jmerelo@sheldon>
 
 	* MANIFEST: Taking out unneeded files, and putting in those needed 
